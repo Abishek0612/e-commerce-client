@@ -1,70 +1,59 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Tailwind css
 
-## Available Scripts
+# Website URL : https://tailwindcss.com/
 
-In the project directory, you can run:
+# In installation there will be Framework guides in that we can find create react app click on it
 
-### `npm start`
+# npm install -D tailwindcss
+ # npx tailwindcss init
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+ # next we need to config tailwind css we can find tailwind.config.js below the installation in website need to copy it and paste it in config file
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+ # then bellow the config there will be 3 lines (index.css ) need to copy it and paste it in our index.css file
 
-### `npm test`
+ # then we can test by using some styling of tailwind css
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+<!-- ####### -->
+# # # # *
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Redux Toolkit
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# Website URL : https://redux-toolkit.js.org/
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Installation : npm install @reduxjs/toolkit  and npm i react-redux 
 
-### `npm run eject`
+# We are using  with  react it is like a binding
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+# next axios for http request
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# We are going to use configureStore(API) for managing store
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+# createAsyncThunk(API) for making async  action and createSlice(API)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+# In src  we can create a folder called redux inside redux we can create 2 folders (1) slices : it represent individual entity and (2) store : The center place for our data in our application
 
-## Learn More
+# Inside slice we will have our collection example : users
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+<!-- ## Sweet alert -->
 
-### Code Splitting
+# sweet alert  ( for displaying error and success message)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+# Website URL : https://github.com/sweetalert2/sweetalert2
 
-### Analyzing the Bundle Size
+# In sweet alert github we can find (React) if we click it can able to find the installation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+#  Installation  : npm install --save sweetalert2 sweetalert2-react-content
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+<!-- # React loading -->
 
-### Advanced Configuration
+# React loading
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+# Website url : https://www.npmjs.com/package/react-loading
 
-### Deployment
+# Installation : npm i react-loading
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Login is hidden in LoadingComponent
