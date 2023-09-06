@@ -57,3 +57,13 @@
 # Installation : npm i react-loading
 
 # Login is hidden in LoadingComponent
+
+
+<!-- React Select -->
+
+# React Select (for dropdown)
+
+# Website URL : https://react-select.com/home
+
+# Installation : npm i --save react-select
+
