@@ -18,7 +18,7 @@ export const createProductAction = createAsyncThunk(
   "product/create",
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const { name, description, brand, category, sizes, colors, price } =
+      const { name, description, brand, category,totalQty, sizes, colors, price } =
         payload;
 
       //Token - Authenticated
@@ -39,6 +39,7 @@ export const createProductAction = createAsyncThunk(
           category,
           sizes,
           colors,
+          totalQty,
           price,
         },
         config

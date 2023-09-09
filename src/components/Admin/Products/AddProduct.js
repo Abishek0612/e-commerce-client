@@ -17,8 +17,19 @@ export default function AddProduct() {
   //! disapatch
   const dispatch = useDispatch();
 
+  //files (Image)
+  // const [files, setFiles] = useState([])
+  // const[fileErrs, setFileErrs] = useState([])
+
+  //file handleChange
+  // const fileHandleChange= (event) => {
+  //   const newFiles =Array.from(event.target.files)
+  //   setFiles(newFiles)
+  // }
+
+
   //? Sizes
-  const sizes = ["S", "M", "L", "XL", "XXL", "XXXL"];
+  const sizes = ["S", "M", "L", "XL", "XXL"];
   const [sizeOption, setSizeOption] = useState([]);
 
   const handleSizeChange = (sizes) => {
@@ -32,6 +43,7 @@ export default function AddProduct() {
       label: size,
     };
   });
+
 
   //?categories
   useEffect(() => {
