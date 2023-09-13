@@ -1,6 +1,10 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import baseURL from "../../../utils/baseURL";
+import {
+  resetErrAction,
+  resetSuccessAction,
+} from "../globalActions/globalActions";
 
 //initialState
 const initialState = {
@@ -18,8 +22,13 @@ export const createCategoryAction = createAsyncThunk(
   "category/create",
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
-      const { name } = payload;
-      //make request
+      const { name, file } = payload;
+
+      //formData
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("file", file);
+
       //Token - Authenticated
       const token = getState()?.users?.userAuth?.userInfo?.token;
       const config = {
@@ -29,9 +38,7 @@ export const createCategoryAction = createAsyncThunk(
       };
       const { data } = await axios.post(
         `${baseURL}/categories`,
-        {
-          name,
-        },
+        formData,
         config
       );
       return data;
@@ -60,8 +67,6 @@ const categorySlice = createSlice({
   name: "categories",
   initialState,
   extraReducers: (builder) => {
-
-
     //?create category (pending)
     builder.addCase(createCategoryAction.pending, (state) => {
       state.loading = true;
@@ -73,6 +78,7 @@ const categorySlice = createSlice({
       state.category = action.payload;
       state.isAdded = true;
     });
+
 
     //? (rejected)
     builder.addCase(createCategoryAction.rejected, (state, action) => {
@@ -93,16 +99,24 @@ const categorySlice = createSlice({
     builder.addCase(fetchCategoryAction.fulfilled, (state, action) => {
       state.loading = false;
       state.categories = action.payload;
-      state.isAdded = true;
     });
 
     //? (rejected)
     builder.addCase(fetchCategoryAction.rejected, (state, action) => {
       state.loading = false;
       state.categories = null;
-      state.isAdded = false;
       state.error = action.payload;
     });
+
+   //reset error
+   builder.addCase(resetErrAction.pending, (state, action) => {
+    state.error = null;
+  });
+
+  //reset success
+  builder.addCase(resetSuccessAction.pending, (state, action) => {
+    state.isAdded = false;
+  });
   },
 });
 

@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -9,10 +9,24 @@ import {
 import { Link } from "react-router-dom";
 import baseURL from "../../utils/baseURL";
 import logo from "./logo.png";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCategoryAction } from "../../redux/slice/categories/categoriesSlice";
 
 export default function Navbar() {
+  // !dispatch
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCategoryAction());
+  }, [dispatch]);
+
+  //get data from store
+  const { categories } = useSelector((state) => state?.categories);
+  // console.log(categories);
+
+  const categoriesToDisplay = categories?.categories?.slice(0,4)
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const categoriesToDisplay = [];
 
   //get login user from local storage
   const user = JSON.parse(localStorage.getItem("userInfo"));
@@ -267,7 +281,7 @@ export default function Navbar() {
                   <div className="flex flex-1 items-center justify-end">
                     <div className="flex items-center lg:ml-8">
                       <div className="flex space-x-8">
-                        {isLoggedIn && 
+                        {isLoggedIn && (
                           <div className="flex">
                             <Link
                               to="/customer-profile"
@@ -279,7 +293,7 @@ export default function Navbar() {
                               />
                             </Link>
                           </div>
-                        }
+                        )}
                       </div>
 
                       <span

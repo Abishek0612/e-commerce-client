@@ -18,20 +18,31 @@ export default function AddProduct() {
   const dispatch = useDispatch();
 
   //files (Image)
-  // const [files, setFiles] = useState([])
-  // const[fileErrs, setFileErrs] = useState([])
+  const [files, setFiles] = useState([]);
+  const [fileErrs, setFileErrs] = useState([]);
 
   //file handleChange
-  // const fileHandleChange= (event) => {
-  //   const newFiles =Array.from(event.target.files)
-  //   setFiles(newFiles)
-  // }
+  const fileHandleChange = (event) => {
+    // console.log(event)
+    const newFiles = Array.from(event.target.files);
+    //validation
+    const newErrs = [];
+    newFiles.forEach((file) => {
+      if (file?.size > 1000000) {
+        newErrs.push(`${file?.name} is too large`);
+      }
+      if (!file?.type?.startsWith("image/")) {
+        newErrs.push(`${file?.name} is not an image`);
+      }
+    });
+    setFiles(newFiles);
+    setFileErrs(newErrs);
+  };
 
-
+  
   //? Sizes
   const sizes = ["S", "M", "L", "XL", "XXL"];
   const [sizeOption, setSizeOption] = useState([]);
-
   const handleSizeChange = (sizes) => {
     setSizeOption(sizes);
   };
@@ -44,16 +55,13 @@ export default function AddProduct() {
     };
   });
 
-
   //?categories
   useEffect(() => {
     dispatch(fetchCategoryAction());
   }, [dispatch]);
 
   //select data from store (categories)
-  const { loading, categories, error } = useSelector(
-    (state) => state?.categories?.categories
-  );
+  const { categories } = useSelector((state) => state?.categories?.categories);
 
   //  console.log(loading, categories, error);
 
@@ -92,8 +100,6 @@ export default function AddProduct() {
     };
   });
 
-  let  isAdded;
-
   //---form data---
   const [formData, setFormData] = useState({
     name: "",
@@ -102,7 +108,6 @@ export default function AddProduct() {
     sizes: "",
     brand: "",
     colors: "",
-    images: "",
     price: "",
     totalQty: "",
   });
@@ -112,12 +117,26 @@ export default function AddProduct() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  //get product from store
+  const { product, isAdded, loading, error } = useSelector(
+    (state) => state?.products
+  );
+
   //onSubmit
   const handleOnSubmit = (e) => {
     e.preventDefault();
+    console.log(fileErrs);
+
     //!dispatch
-    dispatch(createProductAction(formData));
-    console.log(formData)
+    dispatch(
+      createProductAction({
+        ...formData,
+        files,
+        colors: colorsOption?.map((color) => color.label),
+        sizes: sizeOption?.map((size) => size?.label),
+      })
+    );
+    console.log(formData);
     // reset form data
     setFormData({
       name: "",
@@ -134,7 +153,11 @@ export default function AddProduct() {
 
   return (
     <>
+      {/* Error */}
       {error && <ErrorMsg message={error?.message} />}
+
+{/* File Error (image) */}
+      {fileErrs?.length >0 && <ErrorMsg message='File too large or upload an image' />}
       {isAdded && <SuccessMsg message="Product Added Successfully" />}
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -279,15 +302,16 @@ export default function AddProduct() {
                         >
                           <span>Upload files</span>
                           <input
+                            multiple
                             name="images"
                             value={formData.images}
-                            onChange={handleOnChange}
+                            onChange={fileHandleChange}
                             type="file"
                           />
                         </label>
                       </div>
                       <p className="text-xs text-gray-500">
-                        PNG, JPG, GIF up to 10MB
+                        PNG, JPG, GIF up to 1MB
                       </p>
                     </div>
                   </div>
@@ -348,6 +372,7 @@ export default function AddProduct() {
                   <LoadingComponent />
                 ) : (
                   <button
+                  disabled={fileErrs?.length>0}
                     type="submit"
                     className="flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                   >

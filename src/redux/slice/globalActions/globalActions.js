@@ -6,6 +6,6 @@ export const resetErrAction = createAsyncThunk("resetErr-Action", () => {
 });
 
 //reset success action
-export const successErrAction = createAsyncThunk("resetSuccess-Action", () => {
+export const resetSuccessAction = createAsyncThunk("resetSuccess-Action", () => {
   return {};
 });
