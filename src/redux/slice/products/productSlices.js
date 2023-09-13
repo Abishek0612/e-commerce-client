@@ -83,7 +83,8 @@ export const createProductAction = createAsyncThunk(
 //! fetch product action
 export const fetchProductsAction = createAsyncThunk(
   "product/list",
-  async (payload, { rejectWithValue, getState, dispatch }) => {
+  async ({ url }, { rejectWithValue, getState, dispatch }) => {
+    console.log(url);
     try {
       const token = getState()?.users?.userAuth?.userInfo?.token;
       const config = {
@@ -91,35 +92,40 @@ export const fetchProductsAction = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       };
-      const { data } = await axios.get(`${baseURL}/products`, config);
+
+      const { data } = await axios.get(`${url}`, config);
       return data;
     } catch (error) {
-      rejectWithValue(error?.response?.data);
+      return rejectWithValue(error?.response?.data);
     }
   }
 );
+
+
 
 //? Fetch single product details  action
 
 export const fetchSingleProductAction = createAsyncThunk(
   "product/details",
   async (productId, { rejectWithValue, getState, dispatch }) => {
-      try {
-        const token = getState()?.users?.userAuth?.userInfo?.token;
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
+    try {
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
 
-        const { data } = await axios.get(`${baseURL}/products/${productId}`, config);
-        return data;
-      } catch (error) {
-        rejectWithValue(error?.response?.data);
-      }
+      const { data } = await axios.get(
+        `${baseURL}/products/${productId}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      rejectWithValue(error?.response?.data);
+    }
   }
 );
-
 
 ////
 

@@ -83,7 +83,7 @@ const App = () => {
 
 
         {/* public links */}
-        {/* Products */}
+        {/* Products and filter */}
         <Route path="/" element={<HomePage />} />
         <Route path="/products-filters" element={<ProductsFilters />} />
         <Route path="/products/:id" element={<Product />} />
