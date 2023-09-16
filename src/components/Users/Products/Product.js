@@ -8,6 +8,11 @@ import { StarIcon } from "@heroicons/react/20/solid";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchSingleProductAction } from "../../../redux/slice/products/productSlices";
+import {
+  addOrderToCartAction,
+  getCartItemsFromLocalStorageAction,
+} from "../../../redux/slice/cart/cartSlice";
+import Swal from "sweetalert2";
 
 const product = {
   name: "Basic Tee",
@@ -92,12 +97,7 @@ export default function Product() {
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
 
-  //Add to cart handler
-  const addToCartHandler = (item) => {};
   let productDetails = {};
-  let productColor;
-  let productSize;
-  let cartItems = [];
 
   //! get id from params
   const { id } = useParams();
@@ -113,7 +113,66 @@ export default function Product() {
     error,
     product: { product },
   } = useSelector((state) => state?.products);
-  console.log(product);
+  // console.log(product);
+
+  //Get items from cart
+  useEffect(() => {
+    dispatch(getCartItemsFromLocalStorageAction());
+  }, []);
+
+  //get data from store
+  const { cartItems } = useSelector((state) => state?.carts);
+  const productExists = cartItems?.find(
+    (item) => item?._id?.toString() === product?._id.toString()
+  );
+
+  //Add to cart handler
+  const addToCartHandler = () => {
+    //check if product is in cart
+    if (productExists) {
+      return Swal.fire({
+        icon: "error",
+        title: "Oops...!",
+        text: "This product is already in cart",
+      });
+    }
+
+    //check if color/ size selected
+    if (selectedColor === "") {
+      return Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please select product color",
+      });
+    }
+    if (selectedSize === "") {
+      return Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please select product size",
+      });
+    }
+    dispatch(
+      addOrderToCartAction({
+        _id: product?._id,
+        name: product?.name,
+        qty: 1,
+        price: product?.price,
+        description: product?.description,
+        color: selectedColor,
+        size: selectedSize,
+        image: product?.images[0],
+        totalPrice: product?.price,
+        qtyLeft: product?.qtyLeft,
+      })
+    );
+    Swal.fire({
+      icon: "success",
+      title: "Good Job",
+      text: "Ptoduct added to cart successfully",
+    });
+    return dispatch(getCartItemsFromLocalStorageAction());
+  };
 
   return (
     <div className="bg-white">
@@ -265,7 +324,6 @@ export default function Product() {
                   </div>
                 </RadioGroup>
               </div>
-
 
               {/* add to cart */}
               <button

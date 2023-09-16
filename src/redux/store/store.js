@@ -4,6 +4,8 @@ import productReducer from "../slice/products/productSlices";
 import categoryReducer from "../slice/categories/categoriesSlice";
 import brandsReducer from "../slice/categories/brandsSlice";
 import colorsReducer from "../slice/categories/colorsSlice";
+import cartReducer from "../slice/cart/cartSlice";
+import couponsReducer from "../slice/coupons/couponsSlice";
 
 //create a store
 
@@ -14,6 +16,8 @@ const store = configureStore({
     categories: categoryReducer,
     brands: brandsReducer,
     colors: colorsReducer,
+    carts: cartReducer,
+    coupons: couponsReducer,
   },
 });
 
