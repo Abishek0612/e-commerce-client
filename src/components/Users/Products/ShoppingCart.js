@@ -29,15 +29,13 @@ export default function ShoppingCart() {
   const applyCouponSubmit = (e) => {
     e.preventDefault();
     dispatch(fetchSingleCouponAction(couponCode));
+    setCouponCode("");
   };
 
   //? get coupon from store
   const { coupon, loading, error, isAdded } = useSelector(
     (state) => state?.coupons
   );
-
-  let calculateTotalDiscountedPrice;
-  let couponFound;
 
   useEffect(() => {
     dispatch(getCartItemsFromLocalStorageAction());
@@ -208,7 +206,7 @@ export default function ShoppingCart() {
               <form onSubmit={applyCouponSubmit}>
                 <div className="mt-1">
                   <input
-                    value={coupon?.coupon?.discount}
+                    value={couponCode}
                     onChange={(e) => setCouponCode(e.target.value)}
                     type="text"
                     className="block w-full rounded-md border p-2 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
@@ -226,7 +224,7 @@ export default function ShoppingCart() {
 
               <div className="flex items-center justify-between border-t border-gray-200 pt-4">
                 <dt className="text-base font-medium text-gray-900">
-                  Order total
+                  Rs{sumTotalPrice}
                 </dt>
                 <dd className=" text-xl font-medium text-gray-900">Rs 400</dd>
               </div>
@@ -235,8 +233,9 @@ export default function ShoppingCart() {
             <div className="mt-6">
               <Link
                 //  pass data to checkout page
-                to={{
-                  pathname: "/order-payment",
+                to="/order-payment"
+                state={{
+                  sumTotalPrice,
                 }}
                 className="w-full rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
               >

@@ -61,6 +61,73 @@ export const registerUserAction = createAsyncThunk(
   }
 );
 
+//? Update user shipping address action
+export const updateUserShippingAddressAction = createAsyncThunk(
+  "users/update-shipping-address",
+  async (
+    {
+      firstName,
+      lastName,
+      address,
+      city,
+      postalCode,
+      province,
+      phone,
+      country,
+    },
+    { rejectWithValue, getState, dispatch }
+  ) => {
+    try {
+      //get token
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      //make the http request
+      const { data } = await axios.put(
+        `${baseURL}/users/update/shipping`,
+        {
+          firstName,
+          lastName,
+          address,
+          city,
+          postalCode,
+          province,
+          phone,
+          country,
+        },
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+//! get User profile action
+export const getCustomerProfileAction = createAsyncThunk(
+  "users/profile-fetched",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      //get token
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      //make the http request
+      const { data } = await axios.get(`${baseURL}/users/profile`, config);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 // Users Slice
 
 const usersSlice = createSlice({
@@ -101,6 +168,51 @@ const usersSlice = createSlice({
 
     //(rejected)
     builder.addCase(registerUserAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+
+    ///
+    //? Update user shipping address  (pending) (dispatching it to AddShippingAddres component)
+    builder.addCase(
+      updateUserShippingAddressAction.pending,
+      (state, action) => {
+        state.loading = true;
+      }
+    );
+
+    //?(fullfilled)
+    builder.addCase(
+      updateUserShippingAddressAction.fulfilled,
+      (state, action) => {
+        state.user = action.payload;
+        state.loading = false;
+      }
+    );
+
+    //?(rejected)
+    builder.addCase(
+      updateUserShippingAddressAction.rejected,
+      (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+      }
+    );
+
+    //! get User profile action (pending)
+
+    builder.addCase(getCustomerProfileAction.pending, (state, action) => {
+      state.loading = true;
+    });
+
+    //(fullfilled)
+    builder.addCase(getCustomerProfileAction.fulfilled, (state, action) => {
+      state.profile = action.payload;
+      state.loading = false;
+    });
+
+    //(rejected)
+    builder.addCase(getCustomerProfileAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
     });

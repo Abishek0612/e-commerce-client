@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
+import { Dialog, Popover, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
   ShoppingCartIcon,
@@ -11,6 +11,7 @@ import baseURL from "../../utils/baseURL";
 import logo from "./logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategoryAction } from "../../redux/slice/categories/categoriesSlice";
+import { getCartItemsFromLocalStorageAction } from "../../redux/slice/cart/cartSlice";
 
 export default function Navbar() {
   // !dispatch
@@ -34,7 +35,13 @@ export default function Navbar() {
   const isLoggedIn = user?.token ? true : false;
 
   //get cart items from local storage
-  let cartItemsFromLocalStorage;
+  useEffect(() => {
+    dispatch(getCartItemsFromLocalStorageAction())
+  },[dispatch])
+//get cart data from store
+const {cartItems} = useSelector((state) =>state?.carts)
+  
+
   return (
     <div className="bg-white">
       {/* Mobile menu */}
@@ -311,8 +318,8 @@ export default function Navbar() {
                             aria-hidden="true"
                           />
                           <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                            {cartItemsFromLocalStorage?.length > 0
-                              ? cartItemsFromLocalStorage.length
+                            {cartItems?.length > 0
+                              ? cartItems.length
                               : 0}
                           </span>
                         </Link>

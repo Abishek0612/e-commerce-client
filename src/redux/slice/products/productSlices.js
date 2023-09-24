@@ -101,8 +101,6 @@ export const fetchProductsAction = createAsyncThunk(
   }
 );
 
-
-
 //? Fetch single product details  action
 
 export const fetchSingleProductAction = createAsyncThunk(
@@ -123,6 +121,40 @@ export const fetchSingleProductAction = createAsyncThunk(
       return data;
     } catch (error) {
       rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+//! Product update
+export const updateProductAction = createAsyncThunk(
+  "product/update",
+  async (payload, { rejectWithValue, getState, disapatch }) => {
+    try {
+      const {
+        name,
+        description,
+        category,
+        sizes,
+        brand,
+        colors,
+        price,
+        totalQty,
+        id,
+      } = payload;
+      const token = getState()?.users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `${baseURL}/products/${id}`,
+        { name, description, category, sizes, brand, colors, price, totalQty },
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
     }
   }
 );
@@ -197,6 +229,28 @@ const productSlice = createSlice({
       state.isAdded = false;
       state.error = action.payload;
     });
+
+    ////
+     //Update product (Pending)
+     builder.addCase(updateProductAction.pending, (state) => {
+      state.loading = true;
+    });
+
+    //(fullfilled)
+    builder.addCase(updateProductAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.product = action.payload;
+      state.isUpdated = true;
+    });
+
+    //(rejected)
+    builder.addCase(updateProductAction.rejected, (state, action) => {
+      state.loading = false;
+      state.product = null;
+      state.isUpdated = false;
+      state.error = action.payload;
+    });
+
 
     ////
     //reset error

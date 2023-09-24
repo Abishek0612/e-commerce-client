@@ -1,11 +1,23 @@
+import { useDispatch, useSelector } from "react-redux";
 import CustomerDetails from "./CustomerDetails";
 import ShippingAddressDetails from "./ShippingAddressDetails";
+import { useEffect } from "react";
+import { getCustomerProfileAction } from "../../../redux/slice/users/usersSlice";
 
 export default function CustomerProfile() {
-  let profile;
-  let loading;
-  let error;
-  let orders = [];
+//! dispatch
+const dispatch = useDispatch()
+
+useEffect(() => {
+  dispatch(getCustomerProfileAction())
+},[dispatch])
+
+//! dispatch
+const {error, loading, profile} = useSelector((state) => state?.users)
+// console.log(error, loading, profile);
+
+//?get orders
+const orders = profile?.user?.orders
 
   return (
     <>
@@ -59,7 +71,7 @@ export default function CustomerProfile() {
                             Total amount
                           </dt>
                           <dd className="mt-1 font-medium text-gray-900">
-                            ${order?.totalPrice}
+                            Rs {order?.totalPrice}
                           </dd>
                         </div>
                       </dl>
@@ -97,8 +109,8 @@ export default function CustomerProfile() {
                             <div className="sm:flex lg:col-span-7">
                               <div className="aspect-w-1 aspect-h-1 w-full flex-shrink-0 overflow-hidden rounded-lg sm:aspect-none sm:h-40 sm:w-40">
                                 <img
-                                  src={product.imageSrc}
-                                  alt={product.imageAlt}
+                                  src={product.image}
+                                  alt={product.image}
                                   className="h-full w-full object-cover object-center sm:h-full sm:w-full"
                                 />
                               </div>

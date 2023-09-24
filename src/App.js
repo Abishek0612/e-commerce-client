@@ -32,11 +32,13 @@ import Customers from "./components/Admin/Orders/Customers";
 import BrandsColorsList from "./components/Admin/Categories/BrandsColorsList";
 import AuthRoute from "./components/AuthRoute/AuthRoute";
 import AdminRoutes from "./components/AuthRoute/AdminRoutes";
+import ThanksForOrdering from "./components/Users/Products/ThanksForOrdering";
+import UpdateOrders from "./components/Admin/Orders/UpdateOrders";
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Navbar />
+      {/* <Navbar /> */}
       {/* hide navbar if admin */}
       <Routes>
         {/* nested route */}
@@ -54,6 +56,7 @@ const App = () => {
           <Route path="add-product" element={<AddProduct />} />
           <Route path="manage-products" element={<ManageStocks />} />
           <Route path="products/edit/:id" element={<UpdateProduct />} />
+         
           {/* coupons */}
           <Route path="add-coupon" element={<AddCoupon />} />
           <Route path="manage-coupon" element={<ManageCoupons />} />
@@ -75,8 +78,10 @@ const App = () => {
           {/* color category */}
           <Route path="add-color" element={<AddColor />} />
           <Route path="all-colors" element={<BrandsColorsList />} />
+
           {/* Orders */}
           <Route path="manage-orders" element={<ManageOrders />} />
+          <Route path="orders/:id" element={<UpdateOrders />} />
           <Route path="order-payment" element={<OrderPayment />} />
           <Route path="customers" element={<Customers />} />
         </Route>
@@ -88,6 +93,7 @@ const App = () => {
         <Route path="/products-filters" element={<ProductsFilters />} />
         <Route path="/products/:id" element={<Product />} />
         <Route path="/all-categories" element={<AllCategories />} />
+          <Route path="/success" element={<ThanksForOrdering />} />
 
         
         {/* review */}
