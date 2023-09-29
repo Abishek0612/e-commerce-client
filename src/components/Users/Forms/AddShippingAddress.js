@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getCustomerProfileAction, updateUserShippingAddressAction } from "../../../redux/slice/users/usersSlice";
+import { getUserProfileAction, updateUserShippingAddressAction } from "../../../redux/slice/users/usersSlice";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 
@@ -10,7 +10,7 @@ const AddShippingAddress = () => {
 
   //get user profile
   useEffect(() => {
-    dispatch(getCustomerProfileAction())
+    dispatch(getUserProfileAction())
   },[dispatch])
   
   //get data from store

@@ -21,11 +21,14 @@ const HomeProductTrending = () => {
 
   //get data from store
   const {
-    products: { products },
+    data: products = [],
     loading,
     error,
-  } = useSelector((state) => state?.products);
+  } = useSelector((state) => state.products);
   // console.log(products)
+  if(loading) {
+    return <p>Loading...</p>;
+  }
 
   const trendingProducts = [];
 

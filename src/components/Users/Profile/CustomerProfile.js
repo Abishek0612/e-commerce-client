@@ -2,14 +2,14 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomerDetails from "./CustomerDetails";
 import ShippingAddressDetails from "./ShippingAddressDetails";
 import { useEffect } from "react";
-import { getCustomerProfileAction } from "../../../redux/slice/users/usersSlice";
+import { getUserProfileAction } from "../../../redux/slice/users/usersSlice";
 
 export default function CustomerProfile() {
 //! dispatch
 const dispatch = useDispatch()
 
 useEffect(() => {
-  dispatch(getCustomerProfileAction())
+  dispatch(getUserProfileAction())
 },[dispatch])
 
 //! dispatch
@@ -36,7 +36,7 @@ const orders = profile?.user?.orders
       {loading ? (
         <h2>Loading...</h2>
       ) : error ? (
-        <h2>{error}</h2>
+        <h2>{error?.message}</h2>
       ) : orders?.length <= 0 ? (
         <h2 className="text-center mt-10">No Order Found</h2>
       ) : (

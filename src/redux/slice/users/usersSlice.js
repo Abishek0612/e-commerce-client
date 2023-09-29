@@ -108,7 +108,7 @@ export const updateUserShippingAddressAction = createAsyncThunk(
 );
 
 //! get User profile action
-export const getCustomerProfileAction = createAsyncThunk(
+export const getUserProfileAction = createAsyncThunk(
   "users/profile-fetched",
   async (payload, { rejectWithValue, getState, dispatch }) => {
     try {
@@ -125,6 +125,15 @@ export const getCustomerProfileAction = createAsyncThunk(
     } catch (error) {
       return rejectWithValue(error?.response?.data);
     }
+  }
+);
+
+//? logout action
+export const logoutAction = createAsyncThunk(
+  "user/logout",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    localStorage.removeItem("userInfo");
+    return true;
   }
 );
 
@@ -199,20 +208,25 @@ const usersSlice = createSlice({
       }
     );
 
+    //? logout  (fullfilled)
+    builder.addCase(logoutAction.fulfilled, (state, action) => {
+      state.userAuth.userInfo = null;
+    });
+
     //! get User profile action (pending)
 
-    builder.addCase(getCustomerProfileAction.pending, (state, action) => {
+    builder.addCase(getUserProfileAction.pending, (state, action) => {
       state.loading = true;
     });
 
     //(fullfilled)
-    builder.addCase(getCustomerProfileAction.fulfilled, (state, action) => {
+    builder.addCase(getUserProfileAction.fulfilled, (state, action) => {
       state.profile = action.payload;
       state.loading = false;
     });
 
     //(rejected)
-    builder.addCase(getCustomerProfileAction.rejected, (state, action) => {
+    builder.addCase(getUserProfileAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
     });

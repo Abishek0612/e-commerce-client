@@ -12,6 +12,8 @@ import logo from "./logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategoryAction } from "../../redux/slice/categories/categoriesSlice";
 import { getCartItemsFromLocalStorageAction } from "../../redux/slice/cart/cartSlice";
+import { logoutAction } from "../../redux/slice/users/usersSlice";
+import { fetchCouponAction } from "../../redux/slice/coupons/couponsSlice";
 
 export default function Navbar() {
   // !dispatch
@@ -25,7 +27,7 @@ export default function Navbar() {
   const { categories } = useSelector((state) => state?.categories);
   // console.log(categories);
 
-  const categoriesToDisplay = categories?.categories?.slice(0,4)
+  const categoriesToDisplay = categories?.categories?.slice(0, 4);
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -36,11 +38,28 @@ export default function Navbar() {
 
   //get cart items from local storage
   useEffect(() => {
-    dispatch(getCartItemsFromLocalStorageAction())
-  },[dispatch])
-//get cart data from store
-const {cartItems} = useSelector((state) =>state?.carts)
-  
+    dispatch(getCartItemsFromLocalStorageAction());
+  }, [dispatch]);
+  //get cart data from store
+  const { cartItems } = useSelector((state) => state?.carts);
+
+  //logout handler
+  const logoutHandler = () => {
+    dispatch(logoutAction());
+    window.location.reload();
+  };
+  //! coupon
+  useEffect(() => {
+    dispatch(fetchCouponAction());
+  }, [dispatch]);
+
+  //! get coupons
+  const { coupons, loading, error } = useSelector((state) => state?.coupons);
+
+  //Get current coupon
+  const currentCoupon = coupons
+    ? coupons?.coupons?.[coupons?.coupons?.length - 1]
+    : console.log(currentCoupon);
 
   return (
     <div className="bg-white">
@@ -170,33 +189,53 @@ const {cartItems} = useSelector((state) =>state?.carts)
       <header className="relative z-10">
         <nav aria-label="Top">
           {/* Top navigation  desktop*/}
-          <div className="bg-gray-900">
-            <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-              <p className="flex-1 text-center text-sm font-medium text-white lg:flex-none">
-                Get free delivery on orders over $100
-              </p>
 
-              <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                {!isLoggedIn && (
-                  <>
-                    <Link
-                      to="/register"
-                      className="text-sm font-medium text-white hover:text-gray-100"
-                    >
-                      Create an account
-                    </Link>
-                    <span className="h-6 w-px bg-gray-600" aria-hidden="true" />
-                    <Link
-                      to="/login"
-                      className="text-sm font-medium text-white hover:text-gray-100"
-                    >
-                      Sign in
-                    </Link>
-                  </>
-                )}
+          {/*  Coupon in navbar */}
+          {!currentCoupon?.isExpired && (
+            <div className="bg-yellow-600">
+              <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+                <p
+                  style={{ textAlign: "center", width: "100%" }}
+                  className="flex-1 text-center text-sm font-medium text-white lg:flex-none"
+                >
+                  {currentCoupon
+                    ? `${currentCoupon?.code}- ${currentCoupon?.discount}% , ${currentCoupon?.daysLeft}`
+                    : "No Flash sale at moment"}
+                </p>
+
+                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6"></div>
               </div>
             </div>
-          </div>
+          )}
+
+          {!isLoggedIn && (
+            <div className="bg-gray-800">
+              <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                  {!isLoggedIn && (
+                    <>
+                      <Link
+                        to="/register"
+                        className="text-sm font-medium text-white hover:text-gray-100"
+                      >
+                        Create an account
+                      </Link>
+                      <span
+                        className="h-6 w-px bg-gray-600"
+                        aria-hidden="true"
+                      />
+                      <Link
+                        to="/login"
+                        className="text-sm font-medium text-white hover:text-gray-100"
+                      >
+                        Sign in
+                      </Link>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Deskto Navigation */}
           <div className="bg-white">
@@ -285,20 +324,48 @@ const {cartItems} = useSelector((state) =>state?.carts)
                   </Link>
 
                   {/* login profile icon mobile */}
+
                   <div className="flex flex-1 items-center justify-end">
+                  {user?.userFound?.isAdmin && (
+                      <Link
+                        to="/admin"
+                        className="inline-flex items-center rounded-md border border-transparent bg-red-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                      >
+                        Admin Dashboard
+                      </Link>
+                    )}
+
                     <div className="flex items-center lg:ml-8">
                       <div className="flex space-x-8">
                         {isLoggedIn && (
                           <div className="flex">
                             <Link
                               to="/customer-profile"
-                              className="-m-2 p-2 text-gray-400 hover:text-gray-500"
+                              className="-m-2 p-2 mr-2 text-gray-400 hover:text-gray-500"
                             >
                               <UserIcon
                                 className="h-6 w-6"
                                 aria-hidden="true"
                               />
                             </Link>
+
+                            {/* logout */}
+                            <button onClick={logoutHandler}>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="w-6 h-6 text-gray-500 "
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+                                />
+                              </svg>
+                            </button>
                           </div>
                         )}
                       </div>
@@ -318,9 +385,7 @@ const {cartItems} = useSelector((state) =>state?.carts)
                             aria-hidden="true"
                           />
                           <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                            {cartItems?.length > 0
-                              ? cartItems.length
-                              : 0}
+                            {cartItems?.length > 0 ? cartItems.length : 0}
                           </span>
                         </Link>
                       </div>

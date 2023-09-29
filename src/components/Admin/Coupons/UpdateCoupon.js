@@ -6,12 +6,25 @@ import { useParams } from "react-router-dom";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import SuccessMsg from "../../SuccessMsg/SuccessMsg";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchSingleCouponAction,
+  updateCouponAction,
+} from "../../../redux/slice/coupons/couponsSlice";
 
 export default function UpdateCoupon() {
-  //---Fetch coupon ---
-  const { coupon, loading, error, isUpdated } = {};
-  //get the coupon
   const { code } = useParams();
+  //!dispatch
+  const dispatch = useDispatch();
+  //---Fetch coupon ---
+  useEffect(() => {
+    dispatch(fetchSingleCouponAction(code));
+  }, [code, dispatch]);
+
+  const { coupon, loading, error, isUpdated } = useSelector(
+    (state) => state?.coupons
+  );
+  //get the coupon code from url
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
@@ -28,6 +41,15 @@ export default function UpdateCoupon() {
   //onHandleSubmit---
   const onHandleSubmit = (e) => {
     e.preventDefault();
+    dispatch(
+      updateCouponAction({
+        id: coupon?.coupon?._id,
+        code: formData?.code,
+        discount: formData?.discount,
+        startDate,
+        endDate,
+      })
+    );
 
     //reset
     setFormData({
@@ -35,6 +57,7 @@ export default function UpdateCoupon() {
       discount: "",
     });
   };
+
   return (
     <>
       {isUpdated && <SuccessMsg message="Coupon Updated successfully" />}
@@ -110,7 +133,8 @@ export default function UpdateCoupon() {
                 ) : (
                   <button
                     type="submit"
-                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  >
                     Update Coupon
                   </button>
                 )}

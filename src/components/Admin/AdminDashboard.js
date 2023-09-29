@@ -141,14 +141,13 @@ function classNames(...classes) {
 const CategoryLinks = [
   { name: "Add Category", href: "category-to-add", icon: CogIcon },
   {
-    name: "Manage Category",
+    name: "All Category",
     href: "manage-category",
     icon: QuestionMarkCircleIcon,
   },
 ];
 
 const colorsLinks = [
-  { name: "Add New Color", href: "add-color", icon: CogIcon },
   {
     name: "All Colors",
     href: "all-colors",
@@ -157,7 +156,6 @@ const colorsLinks = [
 ];
 
 const brandsLinks = [
-  { name: "Add New Brand", href: "add-brand", icon: CogIcon },
   {
     name: "All Brands",
     href: "all-brands",
@@ -303,6 +301,7 @@ export default function AdminDashboard() {
                         ))}
                       </div>
                     </div>
+
                     {/* colors links mobile */}
                     <div className="mt-3 pt-3">
                       <div className="space-y-1 px-2">
@@ -352,8 +351,9 @@ export default function AdminDashboard() {
 
         {/* Static sidebar for desktop */}
         <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
+        
           {/* Sidebar component, swap this element with another sidebar if you like */}
-          <div className="flex flex-grow flex-col overflow-y-auto bg-cyan-900 pt-5 pb-4">
+          <div className="flex flex-grow flex-col overflow-y-auto bg-cyan-900 pt-32 pb-4">
             <nav
               className="mt-5 flex flex-1 flex-col divide-y divide-cyan-800 overflow-y-auto"
               aria-label="Sidebar"

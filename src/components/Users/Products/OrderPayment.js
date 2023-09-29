@@ -4,7 +4,7 @@ import { getCartItemsFromLocalStorageAction } from "../../../redux/slice/cart/ca
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { placeOrderAction } from "../../../redux/slice/orders/ordersSlice";
-import { getCustomerProfileAction } from "../../../redux/slice/users/usersSlice";
+import { getUserProfileAction } from "../../../redux/slice/users/usersSlice";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 
@@ -27,7 +27,7 @@ export default function OrderPayment() {
 
   //get user profile
   useEffect(() => {
-    dispatch(getCustomerProfileAction());
+    dispatch(getUserProfileAction());
   }, [dispatch]);
 
   //get data from store

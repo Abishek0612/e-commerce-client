@@ -1,34 +1,35 @@
+import { useDispatch, useSelector } from "react-redux";
+import { fetchBrandsAction } from "../../../redux/slice/categories/brandsSlice";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import NoDataFound from "../../NoDataFound/NoDataFound";
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
-import NoDataFound from "../../NoDataFound/NoDataFound";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { fetchCategoryAction } from "../../../redux/slice/categories/categoriesSlice";
+import { fetchColorsAction } from "../../../redux/slice/categories/colorsSlice";
 
-export default function ManageCategories() {
+
+
+export default function ColorsList() {
   //!dispatch
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchCategoryAction());
+    dispatch(fetchColorsAction());
   }, [dispatch]);
 
   const {
-    categories: { categories },
+    colors: { colors },
     loading,
     error,
-  } = useSelector((state) => state?.categories);
+  } = useSelector((state) => state?.colors);
 
-  //delete category handler
-  const deleteCategoryHandler = (id) => {};
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-xl font-semibold text-gray-900">
-            All Categories
+            All Brands Categories [{colors?.length}]
           </h1>
           <p className="mt-2 text-sm text-gray-700">
             A list of all the users in your account including their name, title,
@@ -48,7 +49,7 @@ export default function ManageCategories() {
         <LoadingComponent />
       ) : error ? (
         <ErrorMsg message={error?.message} />
-      ) : categories?.length <= 0 ? (
+      ) : colors?.length <= 0 ? (
         <NoDataFound />
       ) : (
         <div className="mt-8 flex flex-col">
@@ -64,13 +65,7 @@ export default function ManageCategories() {
                       >
                         Name
                       </th>
-                      <th
-                        scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                      >
-                        No. Products
-                      </th>
-                     
+
                       <th
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
@@ -92,32 +87,20 @@ export default function ManageCategories() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-200 bg-white">
-                    {categories?.map((category) => (
-                      <tr key={category?._id}>
+                    {colors?.map((color) => (
+                      <tr key={color?._id}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
                           <div className="flex items-center">
-                            <div className="h-10 w-10 flex-shrink-0">
-                              <img
-                                className="h-10 w-10 rounded-full"
-                                src={category?.image}
-                                alt={category?.name}
-                              />
-                            </div>
                             <div className="ml-4">
                               <div className="font-medium text-gray-900">
-                                {category?.name}
+                                {color?.name}
                               </div>
                             </div>
                           </div>
                         </td>
+
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          <div className="text-gray-900">
-                            {category?.products?.length}
-                          </div>
-                        </td>
-                       
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {new Date(category?.createdAt).toLocaleDateString()}
+                          {new Date(color?.createdAt).toLocaleDateString()}
                         </td>
                         {/* edit icon */}
                         {/* <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-left text-sm font-medium sm:pr-6">

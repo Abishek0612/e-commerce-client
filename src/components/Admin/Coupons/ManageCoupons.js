@@ -1,16 +1,37 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 import NoDataFound from "../../NoDataFound/NoDataFound";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import {
+  deleteCouponAction,
+  fetchCouponAction,
+} from "../../../redux/slice/coupons/couponsSlice";
 
 export default function ManageCoupons() {
-  //get coupons
-  const { coupons, loading, error } = {};
+//  //! for deleting id
+//   const { id } = useParams(); 
 
+  //! dispatch
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCouponAction());
+  }, [dispatch]);
+
+  //get coupons
+  const { coupons, loading, error } = useSelector((state) => state?.coupons);
+
+  console.log(coupons);
   //---deleteHandler---
 
-  const deleteCouponHandler = (id) => {};
+  const deleteCouponHandler = (id) => {
+    dispatch(deleteCouponAction(id));
+    //reload
+    window.location.reload()
+  };
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
@@ -26,7 +47,8 @@ export default function ManageCoupons() {
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
           <button
             type="button"
-            className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">
+            className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+          >
             Add New Coupon
           </button>
         </div>
@@ -50,37 +72,50 @@ export default function ManageCoupons() {
                       <tr>
                         <th
                           scope="col"
-                          className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                          className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
+                        >
                           Code
                         </th>
                         <th
                           scope="col"
-                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        >
                           Percentage (%)
                         </th>
                         <th
                           scope="col"
-                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        >
+                          Status
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        >
                           Start Date
                         </th>
                         <th
                           scope="col"
-                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        >
                           End Date
                         </th>
                         <th
                           scope="col"
-                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        >
                           Days Left
                         </th>
                         <th
                           scope="col"
-                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        >
                           Edit
                         </th>
                         <th
                           scope="col"
-                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        >
                           Delete
                         </th>
                       </tr>
@@ -95,6 +130,17 @@ export default function ManageCoupons() {
                             {coupon?.discount}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            {coupon?.isExpired ? (
+                              <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-700 text-gray-300">
+                                Expired
+                              </span>
+                            ) : (
+                              <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Active
+                              </span>
+                            )}
+                          </td>
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             {new Date(coupon.startDate)?.toLocaleDateString()}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
@@ -107,14 +153,16 @@ export default function ManageCoupons() {
                           {/* edit icon */}
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             <Link
-                              to={`/admin/manage-coupon/edit/${coupon.code}`}>
+                              to={`/admin/manage-coupon/edit/${coupon.code}`}
+                            >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 strokeWidth={1.5}
                                 stroke="currentColor"
-                                className="w-6 h-6 cursor-pointer text-indigo-600">
+                                className="w-6 h-6 cursor-pointer text-indigo-600"
+                              >
                                 <path
                                   strokeLinecap="round"
                                   strokeLinejoin="round"
@@ -123,17 +171,20 @@ export default function ManageCoupons() {
                               </svg>
                             </Link>
                           </td>
+
                           {/* delete */}
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             <button
-                              onClick={() => deleteCouponHandler(coupon?._id)}>
+                              onClick={() => deleteCouponHandler(coupon?._id)}
+                            >
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke-width="1.5"
                                 stroke="currentColor"
-                                className="w-6 h-6 cursor-pointer text-indigo-600">
+                                className="w-6 h-6 cursor-pointer text-indigo-600"
+                              >
                                 <path
                                   stroke-linecap="round"
                                   stroke-linejoin="round"

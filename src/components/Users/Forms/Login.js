@@ -25,22 +25,22 @@ const Login = () => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     dispatch(loginUserAction({ email, password }));
+    // window.location.href = "/";
   };
-
+  
   //get data from store
   const { error, loading, userInfo } = useSelector(
     (state) => state?.users?.userAuth
-  );
-  console.log(error, loading, userInfo);
-
-  //redirect
-  // useEffect(() => {
-  //   if (userInfo?.userFound?.isAdmin) {
-  //     window.location.href = "/admin";
-  //   } else {
-  //     window.location.href = "/customer-profile";
-  //   }
-  // });
+    );
+    // console.log(error, loading, userInfo);
+    
+    //redirect
+    useEffect(() => {
+      if (userInfo?.userFound) {
+      //push to home page
+      // window.location.reload()
+    }
+  }, [userInfo]);
 
   return (
     <>

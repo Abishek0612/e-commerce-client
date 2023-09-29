@@ -1,6 +1,5 @@
 import React from "react";
 import Login from "../Users/Forms/Login";
-
 const AuthRoute = ({ children }) => {
   //get user from local storage
   const user = JSON.parse(localStorage.getItem("userInfo"));
