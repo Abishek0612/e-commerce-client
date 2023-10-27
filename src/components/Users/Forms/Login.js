@@ -5,17 +5,14 @@ import ErrorMsg from "../../ErrorMsg/ErrorMsg";
 import LoadingComponent from "../../LoadingComp/LoadingComponent";
 
 const Login = () => {
+  //dispatch
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "admin@gmail.com",
     password: "12345",
   });
-
-  //! dispatch
-  const dispatch = useDispatch();
-
   //---Destructuring---
   const { email, password } = formData;
-
   //---onchange handler----
   const onChangeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -25,23 +22,19 @@ const Login = () => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     dispatch(loginUserAction({ email, password }));
-    // window.location.href = "/";
   };
-  
+
   //get data from store
   const { error, loading, userInfo } = useSelector(
     (state) => state?.users?.userAuth
-    );
-    // console.log(error, loading, userInfo);
-    
-    //redirect
-    useEffect(() => {
-      if (userInfo?.userFound) {
-      //push to home page
-      // window.location.reload()
+  );
+
+  //redirect
+  useEffect(() => {
+    if (userInfo?.userFound) {
+      window.location.href = "/";
     }
   }, [userInfo]);
-
   return (
     <>
       <section className="py-20 bg-gray-100 overflow-x-hidden">
@@ -56,10 +49,8 @@ const Login = () => {
                 <p className="mb-10 font-semibold font-heading">
                   Happy to see you again
                 </p>
-
-                {/* Error */}
+                {/* err */}
                 {error && <ErrorMsg message={error?.message} />}
-
                 <form
                   className="flex flex-wrap -mx-4"
                   onSubmit={onSubmitHandler}
