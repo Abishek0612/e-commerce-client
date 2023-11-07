@@ -35,16 +35,15 @@ import ThanksForOrdering from "./components/Users/Products/ThanksForOrdering";
 import UpdateOrders from "./components/Admin/Orders/UpdateOrders";
 import BrandsList from "./components/Admin/Categories/BrandsList";
 import ColorsList from "./components/Admin/Categories/ColorsList";
-import { useDispatch, useSelector } from "react-redux";
 
 const App = () => {
   return (
     <BrowserRouter>
       <Navbar />
-
       {/* hide navbar if admin */}
       <Routes>
-        {/* admin route */}
+        {/* nested route */}
+
         <Route
           path="admin"
           element={
@@ -78,14 +77,15 @@ const App = () => {
               </AdminRoutes>
             }
           />
-          {/* <Route
+          <Route
             path="products/edit/:id"
             element={
               <AdminRoutes>
-                <Prod />
+                <UpdateProduct />
               </AdminRoutes>
             }
-          /> */}
+          />
+
           {/* coupons */}
           <Route
             path="add-coupon"
@@ -95,7 +95,14 @@ const App = () => {
               </AdminRoutes>
             }
           />
-          <Route path="manage-coupon" element={<ManageCoupons />} />
+          <Route
+            path="manage-coupon"
+            element={
+              <AdminRoutes>
+                <ManageCoupons />
+              </AdminRoutes>
+            }
+          />
           <Route
             path="manage-coupon/edit/:code"
             element={
@@ -104,6 +111,7 @@ const App = () => {
               </AdminRoutes>
             }
           />
+
           {/* Category */}
           <Route
             path="category-to-add"
@@ -169,13 +177,15 @@ const App = () => {
             }
           />
         </Route>
+
         {/* public links */}
-        {/* Products */}
+        {/* Products and filter */}
         <Route path="/" element={<HomePage />} />
         <Route path="/products-filters" element={<ProductsFilters />} />
         <Route path="/products/:id" element={<Product />} />
         <Route path="/all-categories" element={<AllCategories />} />
         <Route path="/success" element={<ThanksForOrdering />} />
+
         {/* review */}
         <Route
           path="/add-review/:id"
@@ -196,9 +206,12 @@ const App = () => {
             </AuthRoute>
           }
         />
+
         {/* users */}
         <Route path="/login" element={<Login />} />
+
         <Route path="/register" element={<RegisterForm />} />
+
         <Route
           path="/customer-profile"
           element={
@@ -206,7 +219,7 @@ const App = () => {
               <CustomerProfile />
             </AuthRoute>
           }
-        ></Route>
+        />
       </Routes>
     </BrowserRouter>
   );

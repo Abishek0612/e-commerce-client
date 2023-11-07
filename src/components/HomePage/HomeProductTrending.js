@@ -21,7 +21,7 @@ const HomeProductTrending = () => {
 
   //get data from store
   const {
-    data: products = [],
+    products = [],
     loading,
     error,
   } = useSelector((state) => state.products);
@@ -56,7 +56,7 @@ const HomeProductTrending = () => {
             {products?.map((product) => (
               <Link
                 to={`/products/${product._id}`}
-                key={product.id}
+                key={product._id}
                 className="group relative"
               >
                 <div className="h-56 w-full overflow-hidden rounded-md group-hover:opacity-75 lg:h-72 xl:h-80">
