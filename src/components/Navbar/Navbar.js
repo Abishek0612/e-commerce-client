@@ -59,7 +59,7 @@ export default function Navbar() {
   //Get current coupon
   const currentCoupon = coupons
     ? coupons?.coupons?.[coupons?.coupons?.length - 1]
-    : console.log(currentCoupon);
+    : null;
 
   return (
     <div className="bg-white">

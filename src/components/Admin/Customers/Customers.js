@@ -1,5 +1,6 @@
 
 
+
 const people = [
   {
     name: "Lindsay Walton",
@@ -10,8 +11,10 @@ const people = [
   // More people...
 ];
 
+
+
 export default function Customers() {
-  
+ 
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
