@@ -226,7 +226,10 @@ export default function ShoppingCart() {
                 <dt className="text-base font-medium text-gray-900">
                   Rs{sumTotalPrice}
                 </dt>
-                <dd className=" text-xl font-medium text-gray-900">Rs 400</dd>
+                <dd className=" text-xl font-medium text-gray-900">
+                  {" "}
+                  Rs {sumTotalPrice}.00
+                </dd>
               </div>
             </dl>
 

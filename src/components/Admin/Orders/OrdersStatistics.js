@@ -9,11 +9,23 @@ export default function OrdersStats() {
     dispatch(ordersStatsAction());
   }, []);
 
+  
   //! get data from store
   const { loading, error, stats } = useSelector((state) => state?.orders);
 
+ // Ensure obj is an array and has at least one element
   const obj = stats?.orders;
-  const statistics = obj ? Object.values(obj[0]) : [];
+  const hasData = Array.isArray(obj) && obj.length > 0;
+  const statistics = hasData ? Object.values(obj[0]) : [];
+
+  // Check if the component should display loading, error, or data
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error || !hasData) {
+    return <div>Error or no data available.</div>;
+  }
   return (
     <div>
       <dl className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">

@@ -16,6 +16,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import logo from "../Navbar/logo.png";
+import { useSelector } from "react-redux";
 const ordersLinks = [
   {
     name: "Dashboard",
@@ -165,6 +166,10 @@ const brandsLinks = [
 
 export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Accessing user information from Redux store
+  const userEmail = useSelector(state => state.users.profile.user?.email);
+  const userName = useSelector(state => state.users.profile.user?.fullname);
 
   return (
     <>
@@ -505,7 +510,7 @@ export default function AdminDashboard() {
                             alt=""
                           />
                           <h1 className="ml-3 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:leading-9">
-                            Good morning, Emilia Birch
+                            Welcome, {userName}
                           </h1>
                         </div>
                         <dl className="mt-6 flex flex-col sm:ml-3 sm:mt-1 sm:flex-row sm:flex-wrap">
@@ -561,7 +566,7 @@ export default function AdminDashboard() {
                                 d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
                               ></path>
                             </svg>
-                            admin@gmail.com
+                            {userEmail || 'No email available'}
                           </dd>
                         </dl>
                       </div>

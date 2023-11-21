@@ -227,7 +227,7 @@ const usersSlice = createSlice({
 
     //(rejected)
     builder.addCase(getUserProfileAction.rejected, (state, action) => {
-      state.error = action.payload;
+    state.error = action.payload;
       state.loading = false;
     });
 
@@ -236,6 +236,7 @@ const usersSlice = createSlice({
     //reset error action
     builder.addCase(resetErrAction.pending, (state) => {
       state.error = null;
+      state.userAuth.error = null;
     });
   },
 });

@@ -114,7 +114,6 @@ const brandsSlice = createSlice({
     //reset succes
     builder.addCase(resetSuccessAction.pending, (state, action) => {
       state.isAdded = false;
-      state.error = null;
     });
   },
 });

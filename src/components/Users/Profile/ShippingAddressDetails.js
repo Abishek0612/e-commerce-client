@@ -20,16 +20,16 @@ export default function ShippingAddressDetails({ shippingAddress }) {
             Address: {shippingAddress?.address}
           </p>
           <p className="mt-3 text-lg text-gray-600">
-            City: {shippingAddress?.city},
+            City: {shippingAddress?.city}
           </p>
           <p className="mt-3 text-lg text-gray-600">
-            Country: {shippingAddress?.country},
+            Country: {shippingAddress?.country}
           </p>
           <p className="mt-3 text-lg text-gray-600">
-            Phone: {shippingAddress?.phone},
+            Phone: {shippingAddress?.phone}
           </p>
           <p className="mt-3 text-lg text-gray-600">
-            Postal code: {shippingAddress?.postalCode},
+            Postal code: {shippingAddress?.postalCode}
           </p>
         </div>
       </div>

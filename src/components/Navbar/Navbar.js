@@ -6,7 +6,7 @@ import {
   UserIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import baseURL from "../../utils/baseURL";
 import logo from "./logo.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +18,8 @@ import { fetchCouponAction } from "../../redux/slice/coupons/couponsSlice";
 export default function Navbar() {
   // !dispatch
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     dispatch(fetchCategoryAction());
@@ -46,6 +48,7 @@ export default function Navbar() {
   //logout handler
   const logoutHandler = () => {
     dispatch(logoutAction());
+    navigate('/');
     window.location.reload();
   };
   //! coupon

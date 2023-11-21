@@ -83,31 +83,31 @@ export default function ProductsFilters() {
   const [brand, setBrand] = useState("");
   const [size, setSize] = useState("");
 
-  //build up url
-  let productUrl = `${baseURL}/products`;
-  if (category) {
-    productUrl = `${baseURL}/products?category=${category}`;
-  }
 
-  //? brand
-  if (brand) {
-    productUrl = `${productUrl}&brand=${brand}`;
-  }
 
-  //! size
-  if (size) {
-    productUrl = `${productUrl}&size=${size}`;
-  }
+// Replace & with ? for the initial query parameter
+let productUrl = `${baseURL}/products?`;
+if (category) {
+  productUrl += `category=${category}&`;
+}
 
-  //* price
-  if (price) {
-    productUrl = `${productUrl}&price=${price}`;
-  }
+if (brand) {
+  productUrl += `brand=${brand}&`;
+}
 
-  //! color
-  if (color) {
-    productUrl = `${productUrl}&color=${color?.name}`;
-  }
+if (size) {
+  productUrl += `size=${size}&`;
+}
+
+if (price) {
+  productUrl += `price=${price}&`;
+}
+
+if (color) {
+  productUrl += `color=${color?.name}`;
+}
+
+
 
   //fetch all products
   useEffect(() => {
@@ -118,9 +118,18 @@ export default function ProductsFilters() {
     );
   }, [dispatch, category, size, brand, price, color]);
 
+  
+  
+    //?get products from store
+    const productState = useSelector((state) => state?.products);
+  
+    // Use the products array from the state if it exists, otherwise use an empty array
+    const safeProducts = productState ? productState.products : [];
+  
+
   //?get products from store
   const {
-    products: { products },
+    products,
     loading,
     error,
   } = useSelector((state) => state?.products);
@@ -787,10 +796,10 @@ export default function ProductsFilters() {
                 <LoadingComponent />
               ) : error ? (
                 <ErrorMsg message={error?.message} />
-              ) : products?.length <= 0 ? (
+              ) : safeProducts?.length <= 0 ? (
                 <NoDataFound />
               ) : (
-                <Products products={products} />
+                <Products products={safeProducts} />
               )}
             </div>
           </section>
